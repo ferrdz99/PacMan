@@ -50,7 +50,7 @@ def square(x, y):
     path.end_fill()
 
 def offset(point):
-    "Return offset of point in tiles."
+    "Return offset of point in s."
     x = (floor(point.x, 20) + 200) / 20
     y = (180 - floor(point.y, 20)) / 20
     index = int(x + y * 20)
@@ -110,17 +110,38 @@ def move():
     up()
     goto(pacman.x + 10, pacman.y + 10)
     dot(20, 'yellow')
-
+    
+    VEL=5
     for point, course in ghosts:
         if valid(point + course):
+            #Movimiento aleatorio de los fantasmas
             point.move(course)
+            #Se plantean condiciones para provocar el movimiento de los fantasmas dependiendo de la posición de pacman
+            #Esto hará que, cuando encuentren un camino horizontal o vertical, irán directo hacia el, intentando perseguirlo
+            #al verlo.
+            #No es una inteligencia muy desarrollada, pero los hace un poco menos aleatorios.
+            for i in range (4):
+                if ghosts[i][0].x == pacman.x and (pacman.y -ghosts[i][0].y)<0:
+                    if valid(ghosts[i][0]):
+                        ghosts[i][0].move(vector(0,-VEL))
+                elif ghosts[i][0].x == pacman.x and (pacman.y -ghosts[i][0].y)>0:
+                    if valid(ghosts[i][0]):
+                            ghosts[i][0].move(vector(0,VEL))
+                elif ghosts[i][0].y == pacman.y and (pacman.x -ghosts[i][0].x)<0:
+                    if valid(ghosts[i][0]):
+                            ghosts[i][0].move(vector(-VEL,0))
+                elif ghosts[i][0].y == pacman.y and (pacman.x -ghosts[i][0].x)>0:
+                    if valid(ghosts[i][0]):
+                            ghosts[i][0].move(vector(VEL,0))
+        #Si no se cumple lo anterior, se toman los valores aleatorios de la lista options para definir el movimiento en el
+        #siguiente ciclo del for.
         else:
             options = [
-                vector(5, 0),
-                vector(-5, 0),
-                vector(0, 5),
-                vector(0, -5),
-            ]
+                    vector(5, 0),
+                    vector(-5, 0),
+                    vector(0, 5),
+                    vector(0, -5),
+                ]
             plan = choice(options)
             course.x = plan.x
             course.y = plan.y
