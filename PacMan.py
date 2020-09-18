@@ -129,7 +129,7 @@ def move():
     
     VEL=5
     for point, course in ghosts:
-        if valid(point + course):
+        if valid(point + course*2):
             #Movimiento aleatorio de los fantasmas
             point.move(course)
             #Se plantean condiciones para provocar el movimiento de los fantasmas dependiendo de la posición de pacman
@@ -172,7 +172,7 @@ def move():
         if abs(pacman - point) < 20:
             return
 
-    ontimer(move, 100)
+    ontimer(move, 50)
 
 def change(x, y):
     #Esta parte permite el movimiento de pacman por parte del usuario si el espacio que sigue es valido de acuerdo a la función "Valid"
