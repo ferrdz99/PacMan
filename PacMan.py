@@ -1,3 +1,13 @@
+#####################################################
+##Fernando Rodríguez González A01194932 (ferrdz99) ##
+##José de Jesús Ortiz Rangel A01611006 (JoseOrtizR)##
+#####################################################
+
+###################
+##Juego de pacman##
+###################
+
+#Se importan las librerías correspondientes
 from random import choice
 from turtle import *
 from freegames import floor, vector
@@ -6,13 +16,17 @@ state = {'score': 0}
 path = Turtle(visible=False)
 writer = Turtle(visible=False)
 aim = vector(5, 0)
+#Se define la posición inicial de pacman
 pacman = vector(-40, -80)
+#La lista ghosts indica las posiciones originales de los fantasmas
 ghosts = [
     [vector(-180, 160), vector(5, 0)],
     [vector(-180, -160), vector(0, 5)],
     [vector(100, 160), vector(0, -5)],
     [vector(100, -160), vector(-5, 0)],
 ]
+#Se crea el mapa a partir de una matriz de ceros y unos; los ceros representan las zonas inaccesibles mientras que los unos señalas los caminos
+#por donde se desarrolla el juego.
 tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
@@ -57,6 +71,8 @@ def offset(point):
     return index
 
 def valid(point):
+    #Esta función revisa las posiciones del mapa y regresa un valor booleano que depende del valor de un punto en la matriz tiles.
+    #Esto se hace para determinar por donde pueden pasar los fantasmas y pacman.
     "Return True if point is valid in tiles."
     index = offset(point)
 
@@ -159,6 +175,7 @@ def move():
     ontimer(move, 100)
 
 def change(x, y):
+    #Esta parte permite el movimiento de pacman por parte del usuario si el espacio que sigue es valido de acuerdo a la función "Valid"
     "Change pacman aim if valid."
     if valid(pacman + vector(x, y)):
         aim.x = x
